@@ -1,35 +1,33 @@
- document.getElementById('year').textContent = new Date().getFullYear();
+      // Generate floating dust particles in the spotlight
+        function createDust() {
+            const spotlight = document.querySelector('.spotlight');
+            const dust = document.createElement('div');
+            dust.className = 'dust';
+            
+            // Random position within spotlight cone
+            const left = 45 + Math.random() * 10;
+            const delay = Math.random() * 3;
+            const duration = 4 + Math.random() * 4;
+            const size = 2 + Math.random() * 3;
+            
+            dust.style.left = left + '%';
+            dust.style.bottom = '20vh';
+            dust.style.width = size + 'px';
+            dust.style.height = size + 'px';
+            dust.style.animation = `float ${duration}s linear ${delay}s infinite`;
+            
+            spotlight.appendChild(dust);
+        }
 
-  const burger = document.getElementById('burger');
-  const navlinks = document.getElementById('navlinks');
-  burger.addEventListener('click', () => navlinks.classList.toggle('open'));
-  navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navlinks.classList.remove('open')));
+        // Create 20 dust particles
+        for (let i = 0; i < 20; i++) {
+            createDust();
+        }
 
-  const sections = document.querySelectorAll('section[id]');
-  const links = document.querySelectorAll('.navlinks a[href^="#"]');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 130) current = sec.getAttribute('id'); });
-    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
-  });
-
-  document.querySelectorAll('.filter-tabs button').forEach(btn=>{
-    btn.addEventListener('click', function(){
-      document.querySelectorAll('.filter-tabs button').forEach(b=>b.classList.remove('active'));
-      this.classList.add('active');
-    });
-  });
-
-  document.getElementById('contactForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const btn = this.querySelector('button');
-    const original = btn.textContent;
-    btn.textContent = '✓ Message Sent';
-    this.reset();
-    setTimeout(()=>btn.textContent = original, 2500);
-  });
-
-  document.getElementById('downloadCv').addEventListener('click', function(e){
-    e.preventDefault();
-    alert('Add your CV file link here (e.g. href="cv.pdf" download).');
-  });
+        // Optional: subtle mouse parallax on the spotlight
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const spotlight = document.querySelector('.spotlight');
+            spotlight.style.transform = `translateX(calc(-50% + ${x}px))`;
+        });
+  
