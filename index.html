@@ -1,21 +1,395 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NET - NAVIN</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Net Navin — Backend Developer portfolio" />
+  <title>Net Navin — Backend Developer</title>
+
+  <link rel="stylesheet" href="src/css/output.css">
 </head>
-<body>
 
-    <div class="spotlight"></div>
-    <div class="floor-glow"></div>
+<body data-theme="light" data-slide="1">
+  <!-- Floating theme toggle -->
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+    <span id="theme-icon" aria-hidden="true">☾</span>
+    <span id="theme-label">Dark mode</span>
+  </button>
 
-    <div class="container">
-        <div class="coming">COMING</div>
-        <div class="soon-shadow">SOON</div>
-    </div>
+  <div class="morph-blob" aria-hidden="true"></div>
 
-<script src="/js/script.js"></script>
+  <div class="top-progress" aria-hidden="true">
+    <span id="progress-fill"></span>
+  </div>
+
+  <nav class="slide-dots" aria-label="Slide navigation">
+    <button class="slide-dot active" data-target="home" aria-label="Go to introduction"></button>
+    <button class="slide-dot" data-target="about" aria-label="Go to profile and skills"></button>
+    <button class="slide-dot" data-target="experience" aria-label="Go to experience"></button>
+    <button class="slide-dot" data-target="projects" aria-label="Go to projects"></button>
+    <button class="slide-dot" data-target="education" aria-label="Go to education"></button>
+    <button class="slide-dot" data-target="contact" aria-label="Go to contact"></button>
+  </nav>
+
+  <div class="slide-count" aria-live="polite">
+    <strong id="current-slide">01</strong> / 06
+  </div>
+
+  <main>
+    <!-- Slide 1: Introduction -->
+    <section class="slide" id="home">
+      <div class="hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow">Backend Developer</p>
+          <h1 class="serif-heading hero-title">Hello, I’m Net Navin.</h1>
+
+          <p class="hero-description">
+            I build backend web applications, design databases, and support
+            business systems. I’m growing my skills toward full-stack
+            development.
+          </p>
+
+          <div class="hero-actions flex flex-wrap items-center gap-3">
+            <a class="button-yellow" href="#contact">
+              Get in touch <span class="ml-2" aria-hidden="true">→</span>
+            </a>
+
+            <a class="button-outline" href="#projects"> View my projects </a>
+            <!-- 
+            <a class="button-cv" href="/NET_NAVIN_CV.pdf" download>
+              <span class="mr-2" aria-hidden="true">↓</span>Download my CV
+            </a> -->
+          </div>
+        </div>
+
+        <div class="profile-area">
+          <div class="profile-frame">
+            <img src="src/img/netnavin.jpg" alt="Portrait of Net Navin, backend developer" />
+          </div>
+        </div>
+
+        <div class="scroll-hint">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 5v14m0 0 6-6m-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          Scroll to explore
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 2: Profile, skills and languages -->
+    <section class="slide" id="about">
+      <div class="slide-inner about-grid">
+        <div>
+          <p class="eyebrow">Profile &amp; skills</p>
+          <h2 class="serif-heading section-heading">
+            Backend development with a practical mindset.
+          </h2>
+
+          <p class="lead-copy">
+            I am a backend developer with experience at IGROW TECH, where I
+            built web applications using PHP and CodeIgniter 3 and provided
+            technical support for business systems. I enjoy database design,
+            MVC architecture, troubleshooting, writing clean code, and
+            learning new technologies.
+          </p>
+
+          <div class="skill-groups">
+            <div class="skill-group">
+              <h3>Programming</h3>
+              <p>Java, PHP, HTML5, CSS, JavaScript</p>
+            </div>
+
+            <div class="skill-group">
+              <h3>Backend technologies</h3>
+              <p>JDBC, JPA, REST API, MVC, CRUD</p>
+            </div>
+
+            <div class="skill-group">
+              <h3>Frameworks</h3>
+              <p>Laravel 10, Bootstrap 5.3, Spring Boot, CodeIgniter 3</p>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="about-note">
+            <div class="about-note-inner">
+              <p>
+                “I want to improve my skills, solve useful problems, and
+                become a better full-stack developer.”
+              </p>
+              <small>My career goal</small>
+            </div>
+          </div>
+
+          <h3 class="mt-6 text-base font-bold">Languages</h3>
+          <div class="language-list">
+            <div class="language-chip">
+              <strong>Khmer</strong> <span>· Mother Tongue</span>
+            </div>
+            <div class="language-chip">
+              <strong>English</strong> <span>· Intermediate</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Slide 3: Experience -->
+    <section class="slide" id="experience">
+      <div class="slide-inner">
+        <p class="eyebrow">Work experience</p>
+        <h2 class="serif-heading section-heading">
+          Experience solving real business problems.
+        </h2>
+
+        <div class="experience-list">
+          <article class="experience-card">
+            <h3>IGROW TECH</h3>
+            <p class="experience-role">
+              Backend Developer &amp; Technical Support
+            </p>
+            <span class="experience-date">02/2024 – 12/2025</span>
+
+            <ul>
+              <li>
+                Trained customers to use the company’s software and helped
+                resolve their issues.
+              </li>
+              <li>
+                Designed database tables and worked on data performance.
+              </li>
+              <li>
+                Developed backend features for e-commerce, POS, and workshop
+                systems.
+              </li>
+              <li>Designed front-end interfaces for websites.</li>
+            </ul>
+          </article>
+
+          <article class="experience-card">
+            <h3>Jack Serve &amp; Constructor</h3>
+            <p class="experience-role">Assistant Manager</p>
+            <span class="experience-date">01/2023 – 10/2023</span>
+
+            <ul>
+              <li>
+                Managed product stock and completed daily inventory counts.
+              </li>
+              <li>
+                Checked employee attendance and prepared salary payments.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4: Projects -->
+    <section class="slide" id="projects">
+      <div class="slide-inner">
+        <p class="eyebrow">Project experience</p>
+        <h2 class="serif-heading section-heading">
+          Projects I’ve worked on.
+        </h2>
+
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-art project-art--one" aria-hidden="true">
+              <div class="code-window">
+                <div class="code-topbar">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="code-lines">
+                  <div class="code-line">
+                    <span class="code-purple">const</span>
+                    <span class="code-blue">portfolio</span> = {
+                  </div>
+                  <div class="code-line">
+                    &nbsp;&nbsp;<span class="code-green">responsive</span>:
+                    <span class="code-yellow">true</span>,
+                  </div>
+                  <div class="code-line">
+                    &nbsp;&nbsp;<span class="code-green">framework</span>:
+                    <span class="code-yellow">'Bootstrap'</span>
+                  </div>
+                  <div class="code-line">};</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-info">
+              <h3>Web Design Portfolio</h3>
+              <p>
+                A responsive portfolio website showcasing web design and
+                development skills.
+              </p>
+              <span class="project-type">HTML · CSS · JavaScript · Bootstrap</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-art project-art--two" aria-hidden="true">
+              <div class="code-window code-window--two">
+                <div class="code-topbar">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="code-lines">
+                  <div class="code-line">
+                    <span class="code-purple">class</span>
+                    <span class="code-blue">Student</span> {
+                  </div>
+                  <div class="code-line">
+                    &nbsp;&nbsp;<span class="code-green">courses</span> = [];
+                  </div>
+                  <div class="code-line">
+                    &nbsp;&nbsp;<span class="code-green">teachers</span> = [];
+                  </div>
+                  <div class="code-line">}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-info">
+              <h3>School Management System</h3>
+              <p>
+                A Java application for managing students, courses, and
+                teachers, connected to a database.
+              </p>
+              <span class="project-type">Java · JDBC</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-art project-art--three" aria-hidden="true">
+              <div class="code-window">
+                <div class="code-topbar">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="code-lines">
+                  <div class="code-line">
+                    <span class="code-purple">function</span>
+                    <span class="code-blue">manageStock</span>() {
+                  </div>
+                  <div class="code-line">
+                    &nbsp;&nbsp;<span class="code-green">products</span>.update();
+                  </div>
+                  <div class="code-line">
+                    &nbsp;&nbsp;<span class="code-green">inventory</span>.save();
+                  </div>
+                  <div class="code-line">}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-info">
+              <h3>Stock Management System</h3>
+              <p>
+                An inventory system with secure login and product, category,
+                and brand management.
+              </p>
+              <span class="project-type">Inventory · Authentication · CRUD</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 5: Education -->
+    <section class="slide" id="education">
+      <div class="slide-inner">
+        <p class="eyebrow">Education</p>
+        <h2 class="serif-heading section-heading">
+          Learning the foundations of technology.
+        </h2>
+
+        <div class="education-list">
+          <article class="education-card">
+            <div class="education-icon" aria-hidden="true">✦</div>
+            <div>
+              <h3>Bachelor’s Degree in Information Technology</h3>
+              <p>Build Bright University</p>
+              <p class="mt-2 text-sm">
+                Graduated with a Bachelor’s degree in Information Technology.
+              </p>
+            </div>
+            <span class="education-date">2021 – 2025</span>
+          </article>
+
+          <article class="education-card">
+            <div class="education-icon" aria-hidden="true">▤</div>
+            <div>
+              <h3>High School</h3>
+              <p>Hun Sen Sanng High School</p>
+            </div>
+            <span class="education-date">2013 – 2020</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 6: Contact and CV -->
+    <section class="slide" id="contact">
+      <div class="slide-inner contact-content">
+        <p class="eyebrow">Get in touch</p>
+        <h2 class="serif-heading contact-title">
+          Let’s build something useful.
+        </h2>
+
+        <p class="lead-copy contact-copy mt-4">
+          I’m interested in backend development opportunities, technical
+          challenges, and learning from a collaborative team.
+        </p>
+
+        <div class="contact-details">
+          <a class="contact-link" href="mailto:Netnavin70@gmail.com">
+            <i class="bi bi-envelope-fill" aria-hidden="true"></i>
+            <span>Netnavin70@gmail.com</span>
+          </a>
+
+          <a class="contact-link" href="tel:+85511303362">
+            <i class="bi bi-telephone-fill" aria-hidden="true"></i>
+            <span>011 303 362</span>
+          </a>
+
+          <a class="contact-link" href="https://github.com/navin-net" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-github" aria-hidden="true"></i>
+            <span>netnavin</span>
+          </a>
+
+          <div class="contact-link">
+            <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+            <span>Khan PerySor, Phnom Penh</span>
+          </div>
+        </div>
+
+        <div class="contact-actions">
+          <!-- <a class="button-yellow" href="mailto:Netnavin70@gmail.com">
+            Get in touch
+          </a> -->
+
+          <a class="button-outline contact-outline" href="assets/Net-Navin-CV.pdf" download>
+            <span class="mr-2" aria-hidden="true">↓</span>Download my CV
+          </a>
+        </div>
+        <!-- 
+        <div class="social-links">
+          <a href="https://navindev.online" aria-label="Portfolio website" target="_blank" rel="noreferrer">↗</a>
+          <a href="mailto:Netnavin70@gmail.com" aria-label="Email">✉</a>
+        </div> -->
+      </div>
+
+      <footer class="contact-footer">
+        <span></span>
+        <span>© <span id="year"></span> Net Navin</span>
+      </footer>
+    </section>
+  </main>
+
+  <script src="/src/js/script.js"></script>
 </body>
+
 </html>
