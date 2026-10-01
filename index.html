@@ -1,0 +1,1435 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Net Navin — Backend Developer portfolio">
+  <title>Net Navin — Backend Developer</title>
+
+  <!-- Tailwind CSS CDN — convenient for prototypes and standalone pages -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --paper: #f8f9fc;
+      --ink: #202124;
+      --muted: #747985;
+      --yellow: #ffc82e;
+      --line: #e6e8ed;
+      --card: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y proximity;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      transition: background-color .3s ease, color .3s ease;
+    }
+
+    body[data-theme="dark"] {
+      --paper: #10131b;
+      --ink: #f3f4f6;
+      --muted: #a1a7b4;
+      --line: rgba(255, 255, 255, .12);
+      --card: #191e29;
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1.25rem;
+      z-index: 50;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .6rem .9rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--ink);
+      font: inherit;
+      font-size: .85rem;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, .1);
+      transition:
+        transform .2s ease,
+        background-color .25s ease,
+        color .25s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Shape morphs between slides */
+    .morph-blob {
+      position: fixed;
+      z-index: 0;
+      top: 4vh;
+      right: -7vw;
+      width: 60vw;
+      height: 95vh;
+      border-radius: 42% 0 0 48% / 34% 0 0 58%;
+      background: var(--yellow);
+      pointer-events: none;
+      transition:
+        top 1s cubic-bezier(.22, 1, .36, 1),
+        right 1s cubic-bezier(.22, 1, .36, 1),
+        width 1s cubic-bezier(.22, 1, .36, 1),
+        height 1s cubic-bezier(.22, 1, .36, 1),
+        border-radius 1s cubic-bezier(.22, 1, .36, 1),
+        background-color 1s ease,
+        transform 1s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    body[data-slide="1"] .morph-blob {
+      top: 4vh;
+      right: -7vw;
+      width: 60vw;
+      height: 95vh;
+      background: #ffc82e;
+      border-radius: 42% 0 0 48% / 34% 0 0 58%;
+      transform: rotate(0);
+    }
+
+    body[data-slide="2"] .morph-blob {
+      top: 8vh;
+      right: -8vw;
+      width: 48vw;
+      height: 75vh;
+      background: #fff0b8;
+      border-radius: 61% 39% 47% 53% / 42% 54% 46% 58%;
+      transform: translate(-28vw, 8vh) rotate(25deg);
+    }
+
+    body[data-slide="3"] .morph-blob {
+      top: 15vh;
+      right: -5vw;
+      width: 55vw;
+      height: 75vh;
+      background: #ffe18a;
+      border-radius: 42% 58% 65% 35% / 48% 38% 62% 52%;
+      transform: translate(-5vw, 12vh) rotate(-18deg);
+    }
+
+    body[data-slide="4"] .morph-blob {
+      top: 0;
+      right: 12vw;
+      width: 42vw;
+      height: 65vh;
+      background: #dcefe6;
+      border-radius: 58% 42% 38% 62% / 54% 42% 58% 46%;
+      transform: translate(-5vw, 4vh) rotate(18deg);
+    }
+
+    body[data-slide="5"] .morph-blob {
+      top: 10vh;
+      right: -7vw;
+      width: 50vw;
+      height: 72vh;
+      background: #e9e4ff;
+      border-radius: 50% 50% 44% 56% / 43% 55% 45% 57%;
+      transform: translate(-4vw, 5vh) rotate(-12deg);
+    }
+
+    body[data-slide="6"] .morph-blob {
+      top: -18vh;
+      right: -25vw;
+      width: 115vw;
+      height: 140vh;
+      background: #ffc82e;
+      border-radius: 44% 0 0 33% / 25% 0 0 55%;
+      transform: rotate(-8deg);
+    }
+
+    body[data-theme="dark"][data-slide="2"] .morph-blob { background: #504521; }
+    body[data-theme="dark"][data-slide="3"] .morph-blob { background: #514322; }
+    body[data-theme="dark"][data-slide="4"] .morph-blob { background: #20392f; }
+    body[data-theme="dark"][data-slide="5"] .morph-blob { background: #302b45; }
+
+    /* Slideshow sections */
+    .slide {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      min-height: 100svh;
+      padding: 5rem 8% 4rem;
+      scroll-snap-align: start;
+    }
+
+    .slide-inner {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      margin-bottom: .9rem;
+      color: #a77a00;
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .serif-heading {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      letter-spacing: -.045em;
+      line-height: 1.05;
+    }
+
+    .section-heading {
+      max-width: 780px;
+      margin-bottom: 1rem;
+      font-size: clamp(2.7rem, 5vw, 4.8rem);
+    }
+
+    .lead-copy {
+      max-width: 640px;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.5vw, 1.18rem);
+      line-height: 1.75;
+    }
+
+    /* Buttons */
+    .button-yellow,
+    .button-outline,
+    .button-cv {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .8rem 1.3rem;
+      border: 2px solid transparent;
+      border-radius: 7px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s ease, background-color .2s ease;
+    }
+
+    .button-yellow {
+      border-color: var(--yellow);
+      background: var(--yellow);
+      color: #202124;
+    }
+
+    .button-yellow:hover {
+      transform: translateY(-2px);
+      border-color: #e8b300;
+      background: #e8b300;
+      color: #202124;
+    }
+
+    .button-outline {
+      border-color: var(--ink);
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .button-outline:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .button-cv {
+      padding-right: .3rem;
+      padding-left: .3rem;
+      color: var(--ink);
+    }
+
+    .button-cv:hover {
+      color: #9a7300;
+    }
+
+    /* Slide 1: introduction and profile image */
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      align-items: center;
+      gap: 3rem;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-title {
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(3.5rem, 6.7vw, 6.2rem);
+    }
+
+    .hero-description {
+      max-width: 580px;
+      margin: 1.5rem 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+      line-height: 1.7;
+    }
+
+    .profile-area {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      min-width: 0;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .profile-frame {
+      width: min(100%, 430px);
+      height: min(68vh, 550px);
+      min-height: 390px;
+      overflow: hidden;
+      border: 8px solid rgba(255, 255, 255, .85);
+      border-radius: 47% 47% 20px 20px / 38% 38% 20px 20px;
+      background: #fff;
+      box-shadow: 0 20px 55px rgba(34, 31, 20, .14);
+    }
+
+    .profile-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 16%;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 1.8rem;
+      left: 8%;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      color: var(--muted);
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .scroll-hint svg {
+      color: #a77a00;
+      animation: nudge 1.4s ease-in-out infinite;
+    }
+
+    @keyframes nudge {
+      50% { transform: translateY(5px); }
+    }
+
+    /* Slide 2: profile, skills, languages */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      align-items: center;
+      gap: 4rem;
+    }
+
+    .skill-groups {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.4rem;
+    }
+
+    .skill-group {
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--card);
+    }
+
+    .skill-group h3 {
+      margin: 0 0 .4rem;
+      font-size: .95rem;
+      font-weight: 700;
+    }
+
+    .skill-group p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .language-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem;
+      margin-top: 1rem;
+    }
+
+    .language-chip {
+      padding: .55rem .85rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--card);
+      font-size: .88rem;
+    }
+
+    .language-chip span { color: var(--muted); }
+
+    .about-note {
+      padding: 2.3rem;
+      border-radius: 48% 52% 58% 42% / 48% 45% 55% 52%;
+      background: #fff1bf;
+      transform: rotate(-2deg);
+    }
+
+    .about-note-inner { transform: rotate(2deg); }
+
+    .about-note p {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.5rem, 2.7vw, 2.3rem);
+      line-height: 1.4;
+    }
+
+    .about-note small {
+      display: block;
+      margin-top: 1.2rem;
+      color: #75612b;
+      font-size: .78rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    body[data-theme="dark"] .about-note { background: #292719; }
+    body[data-theme="dark"] .about-note small { color: #e0cb83; }
+
+    /* Slide 3: experience */
+    .experience-list {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.8rem;
+    }
+
+    .experience-card {
+      padding: 1.35rem 1.5rem;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--yellow);
+      border-radius: 10px;
+      background: var(--card);
+    }
+
+    .experience-card h3 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .experience-role {
+      margin: .3rem 0;
+      color: var(--muted);
+    }
+
+    .experience-date {
+      display: inline-block;
+      margin-bottom: .7rem;
+      color: #9a7300;
+      font-size: .83rem;
+      font-weight: 700;
+    }
+
+    .experience-card ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* Slide 4: projects */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.6rem;
+    }
+
+    .project-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, .12);
+    }
+
+    .project-art {
+      display: grid;
+      height: 175px;
+      padding: 1rem;
+      place-items: center;
+    }
+
+    .project-art--one { background: #e9e4ff; }
+    .project-art--two { background: #d6f1e6; }
+    .project-art--three { background: #ffd9c9; }
+
+    .code-window {
+      width: 95%;
+      overflow: hidden;
+      border-radius: 9px;
+      background: #202433;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
+      transform: rotate(-2deg);
+    }
+
+    .code-window--two { transform: rotate(2deg); }
+
+    .code-topbar {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      height: 25px;
+      padding: 0 9px;
+      background: #303545;
+    }
+
+    .code-topbar span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #f28b82;
+    }
+
+    .code-topbar span:nth-child(2) { background: #fbbc04; }
+    .code-topbar span:nth-child(3) { background: #81c995; }
+
+    .code-lines {
+      padding: 10px 12px 12px;
+      font-family: "Courier New", monospace;
+      font-size: .68rem;
+      line-height: 1.65;
+    }
+
+    .code-line {
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .code-purple { color: #c7a6ff; }
+    .code-blue { color: #83c9ff; }
+    .code-green { color: #a5d6a7; }
+    .code-yellow { color: #ffe082; }
+    .code-muted { color: #a5a9b6; }
+
+    .project-info { padding: 1rem 1.1rem 1.2rem; }
+
+    .project-info h3 {
+      margin: 0 0 .4rem;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .project-info p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.55;
+    }
+
+    .project-type {
+      display: inline-block;
+      margin-top: .8rem;
+      color: #947000;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    /* Slide 5: education */
+    .education-list {
+      display: grid;
+      gap: 1rem;
+      max-width: 850px;
+      margin-top: 2rem;
+    }
+
+    .education-card {
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      align-items: start;
+      gap: 1rem;
+      padding: 1.25rem;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--card);
+    }
+
+    .education-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(255, 200, 46, .2);
+      color: #9a7300;
+      font-size: 1.3rem;
+    }
+
+    .education-card h3 {
+      margin: 0 0 .3rem;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .education-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .education-date {
+      color: #9a7300;
+      font-size: .82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* Slide 6: contact */
+    .contact-content { max-width: 900px; }
+
+    .contact-title {
+      margin: 0;
+      font-size: clamp(3.3rem, 8vw, 7rem);
+    }
+
+    #contact .eyebrow { color: #765600; }
+
+    #contact .contact-title,
+    #contact .contact-copy,
+    #contact .contact-footer,
+    #contact .contact-link,
+    #contact .social-links a {
+      color: #202124;
+    }
+
+    .contact-details {
+      display: grid;
+      gap: .85rem;
+      margin-top: 1.5rem;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      width: fit-content;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      text-decoration: none;
+    }
+
+    .contact-link svg { flex-shrink: 0; }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .8rem;
+      margin-top: 1.5rem;
+    }
+
+    .contact-outline {
+      border-color: #202124;
+      color: #202124;
+    }
+
+    .contact-outline:hover {
+      background: #202124;
+      color: #fff;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    .social-links a { font-size: 1.3rem; }
+
+    .contact-footer {
+      position: absolute;
+      right: 8%;
+      bottom: 1.5rem;
+      left: 8%;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      color: #202124;
+      font-size: .78rem;
+    }
+
+    /* Slide controls */
+    .slide-dots {
+      position: fixed;
+      top: 50%;
+      right: 1.5rem;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      transform: translateY(-50%);
+    }
+
+    .slide-dot {
+      width: 10px;
+      height: 10px;
+      padding: 0;
+      border: 1px solid #747985;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .slide-dot.active {
+      border-color: #d9a500;
+      background: var(--yellow);
+      transform: scale(1.35);
+    }
+
+    .slide-count {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.2rem;
+      z-index: 20;
+      color: var(--muted);
+      font-size: .78rem;
+      letter-spacing: .08em;
+    }
+
+    .slide-count strong { color: var(--ink); }
+
+    .top-progress {
+      position: fixed;
+      inset: 0 auto auto 0;
+      z-index: 60;
+      width: 100%;
+      height: 3px;
+    }
+
+    .top-progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--yellow);
+      transition: width .2s ease;
+    }
+
+    /* Reveal only the active slide's main content */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .45s ease, transform .55s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .slide.is-active .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Mobile: photo appears below intro text */
+    @media (max-width: 767px) {
+      .theme-toggle {
+        top: .75rem;
+        right: .75rem;
+        padding: .55rem .75rem;
+      }
+
+      .slide {
+        min-height: 100svh;
+        padding: 4.5rem 2rem 4rem 1.2rem;
+      }
+
+      #home {
+        display: block;
+        min-height: 100svh;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+      }
+
+      .hero-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .hero-title {
+        max-width: 580px;
+        font-size: clamp(3rem, 12vw, 4.7rem);
+      }
+
+      .hero-description {
+        margin: 1rem 0 1.2rem;
+        font-size: 1rem;
+      }
+
+      .hero-actions { gap: .65rem !important; }
+
+      .hero-actions a {
+        padding: .7rem 1rem;
+        font-size: .9rem;
+      }
+
+      .profile-area {
+        justify-content: center;
+        margin-top: .3rem;
+      }
+
+      .profile-frame {
+        width: min(76vw, 300px);
+        height: min(92vw, 350px);
+        min-height: 0;
+        border-width: 6px;
+        border-radius: 48% 48% 16px 16px / 36% 36% 16px 16px;
+      }
+
+      .profile-frame img { object-position: center 16%; }
+
+      .scroll-hint {
+        position: static;
+        margin: 1.2rem 0 0;
+        font-size: .68rem;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .section-heading {
+        font-size: clamp(2.4rem, 10vw, 3.5rem);
+      }
+
+      .about-note {
+        max-width: 500px;
+        padding: 1.7rem;
+      }
+
+      .about-note p {
+        font-size: clamp(1.4rem, 6vw, 2rem);
+      }
+
+      .experience-card { padding: 1.1rem; }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+        gap: .85rem;
+        margin-top: 1rem;
+      }
+
+      .project-art { height: 135px; }
+      .project-info { padding: .8rem 1rem 1rem; }
+      .project-info h3 { font-size: 1.15rem; }
+      .project-type { margin-top: .5rem; }
+
+      .education-card {
+        grid-template-columns: 42px 1fr;
+        gap: .8rem;
+        padding: 1rem;
+      }
+
+      .education-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+      }
+
+      .education-date {
+        grid-column: 2;
+        white-space: normal;
+      }
+
+      .contact-title {
+        font-size: clamp(3rem, 12vw, 5rem);
+      }
+
+      .contact-footer {
+        right: 1.2rem;
+        left: 1.2rem;
+        font-size: .7rem;
+      }
+
+      .morph-blob {
+        top: 53vh;
+        right: -28vw;
+        width: 105vw;
+        height: 45vh;
+      }
+
+      body[data-slide="2"] .morph-blob,
+      body[data-slide="3"] .morph-blob,
+      body[data-slide="4"] .morph-blob,
+      body[data-slide="5"] .morph-blob {
+        top: 50vh;
+        right: -30vw;
+        width: 100vw;
+        height: 45vh;
+        transform: translate(0, 0) rotate(15deg);
+      }
+
+      body[data-slide="6"] .morph-blob {
+        top: -8vh;
+        right: -35vw;
+        width: 145vw;
+        height: 120vh;
+      }
+
+      .slide-dots {
+        right: .6rem;
+        gap: .6rem;
+      }
+
+      .slide-dot {
+        width: 8px;
+        height: 8px;
+      }
+
+      .slide-count {
+        right: .8rem;
+        bottom: .65rem;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .theme-toggle {
+        width: 40px;
+        height: 40px;
+        justify-content: center;
+        padding: 0;
+      }
+
+      .theme-toggle span { display: none; }
+      .hero-title { font-size: 2.8rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body data-theme="light" data-slide="1">
+  <!-- Floating theme toggle -->
+  <button
+    id="theme-toggle"
+    class="theme-toggle"
+    type="button"
+    aria-label="Switch to dark mode"
+    aria-pressed="false"
+  >
+    <span id="theme-icon" aria-hidden="true">☾</span>
+    <span id="theme-label">Dark mode</span>
+  </button>
+
+  <div class="morph-blob" aria-hidden="true"></div>
+
+  <div class="top-progress" aria-hidden="true">
+    <span id="progress-fill"></span>
+  </div>
+
+  <nav class="slide-dots" aria-label="Slide navigation">
+    <button class="slide-dot active" data-target="home" aria-label="Go to introduction"></button>
+    <button class="slide-dot" data-target="about" aria-label="Go to profile and skills"></button>
+    <button class="slide-dot" data-target="experience" aria-label="Go to experience"></button>
+    <button class="slide-dot" data-target="projects" aria-label="Go to projects"></button>
+    <button class="slide-dot" data-target="education" aria-label="Go to education"></button>
+    <button class="slide-dot" data-target="contact" aria-label="Go to contact"></button>
+  </nav>
+
+  <div class="slide-count" aria-live="polite">
+    <strong id="current-slide">01</strong> / 06
+  </div>
+
+  <main>
+    <!-- Slide 1: Introduction -->
+    <section class="slide" id="home">
+      <div class="hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow">Backend Developer</p>
+          <h1 class="serif-heading hero-title">Hello, I’m Net Navin.</h1>
+
+          <p class="hero-description">
+            I build backend web applications, design databases, and support
+            business systems. I’m growing my skills toward full-stack development.
+          </p>
+
+          <div class="hero-actions flex flex-wrap items-center gap-3">
+            <a class="button-yellow" href="#contact">
+              Get in touch <span class="ml-2" aria-hidden="true">→</span>
+            </a>
+
+            <a class="button-outline" href="#projects">
+              View my projects
+            </a>
+
+            <a class="button-cv" href="assets/Net-Navin-CV.pdf" download>
+              <span class="mr-2" aria-hidden="true">↓</span>Download my CV
+            </a>
+          </div>
+        </div>
+
+        <div class="profile-area">
+          <div class="profile-frame">
+            <img
+              src="images/net-navin.jpg"
+              alt="Portrait of Net Navin, backend developer"
+            >
+          </div>
+        </div>
+
+        <div class="scroll-hint">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 5v14m0 0 6-6m-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Scroll to explore
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 2: Profile, skills and languages -->
+    <section class="slide" id="about">
+      <div class="slide-inner about-grid">
+        <div>
+          <p class="eyebrow">Profile &amp; skills</p>
+          <h2 class="serif-heading section-heading">Backend development with a practical mindset.</h2>
+
+          <p class="lead-copy">
+            I am a backend developer with experience at IGROW TECH, where I
+            built web applications using PHP and CodeIgniter 3 and provided
+            technical support for business systems. I enjoy database design,
+            MVC architecture, troubleshooting, writing clean code, and learning
+            new technologies.
+          </p>
+
+          <div class="skill-groups">
+            <div class="skill-group">
+              <h3>Programming</h3>
+              <p>Java, PHP, HTML5, CSS, JavaScript</p>
+            </div>
+
+            <div class="skill-group">
+              <h3>Backend technologies</h3>
+              <p>JDBC, JPA, REST API, MVC, CRUD</p>
+            </div>
+
+            <div class="skill-group">
+              <h3>Frameworks</h3>
+              <p>Laravel 10, Bootstrap 5.3, Spring Boot, CodeIgniter 3</p>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="about-note">
+            <div class="about-note-inner">
+              <p>“I want to improve my skills, solve useful problems, and become a better full-stack developer.”</p>
+              <small>My career goal</small>
+            </div>
+          </div>
+
+          <h3 class="mt-6 text-base font-bold">Languages</h3>
+          <div class="language-list">
+            <div class="language-chip"><strong>Khmer</strong> <span>· Good</span></div>
+            <div class="language-chip"><strong>English</strong> <span>· Intermediate</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Slide 3: Experience -->
+    <section class="slide" id="experience">
+      <div class="slide-inner">
+        <p class="eyebrow">Work experience</p>
+        <h2 class="serif-heading section-heading">Experience solving real business problems.</h2>
+
+        <div class="experience-list">
+          <article class="experience-card">
+            <h3>IGROW TECH</h3>
+            <p class="experience-role">Backend Developer &amp; Technical Support</p>
+            <span class="experience-date">02/2024 – 12/2025</span>
+
+            <ul>
+              <li>Trained customers to use the company’s software and helped resolve their issues.</li>
+              <li>Designed database tables and worked on data performance.</li>
+              <li>Developed backend features for e-commerce, POS, and workshop systems.</li>
+              <li>Designed front-end interfaces for websites.</li>
+            </ul>
+          </article>
+
+          <article class="experience-card">
+            <h3>Jack Serve &amp; Constructor</h3>
+            <p class="experience-role">Assistant Manager</p>
+            <span class="experience-date">01/2023 – 10/2023</span>
+
+            <ul>
+              <li>Managed product stock and completed daily inventory counts.</li>
+              <li>Checked employee attendance and prepared salary payments.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4: Projects -->
+    <section class="slide" id="projects">
+      <div class="slide-inner">
+        <p class="eyebrow">Project experience</p>
+        <h2 class="serif-heading section-heading">Projects I’ve worked on.</h2>
+
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-art project-art--one" aria-hidden="true">
+              <div class="code-window">
+                <div class="code-topbar"><span></span><span></span><span></span></div>
+                <div class="code-lines">
+                  <div class="code-line"><span class="code-purple">const</span> <span class="code-blue">portfolio</span> = {</div>
+                  <div class="code-line">&nbsp;&nbsp;<span class="code-green">responsive</span>: <span class="code-yellow">true</span>,</div>
+                  <div class="code-line">&nbsp;&nbsp;<span class="code-green">framework</span>: <span class="code-yellow">'Bootstrap'</span></div>
+                  <div class="code-line">};</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-info">
+              <h3>Web Design Portfolio</h3>
+              <p>A responsive portfolio website showcasing web design and development skills.</p>
+              <span class="project-type">HTML · CSS · JavaScript · Bootstrap</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-art project-art--two" aria-hidden="true">
+              <div class="code-window code-window--two">
+                <div class="code-topbar"><span></span><span></span><span></span></div>
+                <div class="code-lines">
+                  <div class="code-line"><span class="code-purple">class</span> <span class="code-blue">Student</span> {</div>
+                  <div class="code-line">&nbsp;&nbsp;<span class="code-green">courses</span> = [];</div>
+                  <div class="code-line">&nbsp;&nbsp;<span class="code-green">teachers</span> = [];</div>
+                  <div class="code-line">}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-info">
+              <h3>School Management System</h3>
+              <p>A Java application for managing students, courses, and teachers, connected to a database.</p>
+              <span class="project-type">Java · JDBC</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-art project-art--three" aria-hidden="true">
+              <div class="code-window">
+                <div class="code-topbar"><span></span><span></span><span></span></div>
+                <div class="code-lines">
+                  <div class="code-line"><span class="code-purple">function</span> <span class="code-blue">manageStock</span>() {</div>
+                  <div class="code-line">&nbsp;&nbsp;<span class="code-green">products</span>.update();</div>
+                  <div class="code-line">&nbsp;&nbsp;<span class="code-green">inventory</span>.save();</div>
+                  <div class="code-line">}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-info">
+              <h3>Stock Management System</h3>
+              <p>An inventory system with secure login and product, category, and brand management.</p>
+              <span class="project-type">Inventory · Authentication · CRUD</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 5: Education -->
+    <section class="slide" id="education">
+      <div class="slide-inner">
+        <p class="eyebrow">Education</p>
+        <h2 class="serif-heading section-heading">Learning the foundations of technology.</h2>
+
+        <div class="education-list">
+          <article class="education-card">
+            <div class="education-icon" aria-hidden="true">✦</div>
+            <div>
+              <h3>Bachelor’s Degree in Information Technology</h3>
+              <p>Build Bright University</p>
+              <p class="mt-2 text-sm">Graduated with a Bachelor’s degree in Information Technology.</p>
+            </div>
+            <span class="education-date">2021 – 2025</span>
+          </article>
+
+          <article class="education-card">
+            <div class="education-icon" aria-hidden="true">▤</div>
+            <div>
+              <h3>High School</h3>
+              <p>Hun Sen Sanng High School</p>
+            </div>
+            <span class="education-date">2013 – 2020</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 6: Contact and CV -->
+    <section class="slide" id="contact">
+      <div class="slide-inner contact-content">
+        <p class="eyebrow">Get in touch</p>
+        <h2 class="serif-heading contact-title">Let’s build something useful.</h2>
+
+        <p class="lead-copy contact-copy mt-4">
+          I’m interested in backend development opportunities, technical
+          challenges, and learning from a collaborative team.
+        </p>
+
+        <div class="contact-details">
+          <a class="contact-link" href="mailto:Netnavin70@gmail.com">
+            <span aria-hidden="true">✉</span>
+            Netnavin70@gmail.com
+          </a>
+
+          <a class="contact-link" href="tel:+85511303362">
+            <span aria-hidden="true">☎</span>
+            011 303 362
+          </a>
+
+          <div class="contact-link">
+            <span aria-hidden="true">⌖</span>
+            Khan PerySor, Phnom Penh
+          </div>
+
+          <a class="contact-link" href="https://navindev.online" target="_blank" rel="noreferrer">
+            <span aria-hidden="true">↗</span>
+            navindev.online
+          </a>
+        </div>
+
+        <div class="contact-actions">
+          <a class="button-yellow" href="mailto:Netnavin70@gmail.com">
+            Get in touch
+          </a>
+
+          <a class="button-outline contact-outline" href="assets/Net-Navin-CV.pdf" download>
+            <span class="mr-2" aria-hidden="true">↓</span>Download my CV
+          </a>
+        </div>
+
+        <div class="social-links">
+          <a href="https://navindev.online" aria-label="Portfolio website" target="_blank" rel="noreferrer">↗</a>
+          <a href="mailto:Netnavin70@gmail.com" aria-label="Email">✉</a>
+        </div>
+      </div>
+
+      <footer class="contact-footer">
+        <span>© <span id="year"></span> Net Navin</span>
+        <span>Backend Developer · Phnom Penh</span>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    const slides = [...document.querySelectorAll(".slide")];
+    const dots = [...document.querySelectorAll(".slide-dot")];
+    const currentSlideLabel = document.getElementById("current-slide");
+    const progressFill = document.getElementById("progress-fill");
+
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeIcon = document.getElementById("theme-icon");
+    const themeLabel = document.getElementById("theme-label");
+
+    let activeIndex = -1;
+    let scrollFramePending = false;
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Light/dark theme
+    function applyTheme(theme) {
+      const isDark = theme === "dark";
+
+      document.body.dataset.theme = theme;
+      themeIcon.textContent = isDark ? "☀" : "☾";
+      themeLabel.textContent = isDark ? "Light mode" : "Dark mode";
+      themeToggle.setAttribute("aria-pressed", String(isDark));
+      themeToggle.setAttribute(
+        "aria-label",
+        isDark ? "Switch to light mode" : "Switch to dark mode"
+      );
+
+      try {
+        localStorage.setItem("netnavin-portfolio-theme", theme);
+      } catch (error) {
+        // The toggle still works if local storage is unavailable.
+      }
+    }
+
+    let savedTheme = "light";
+
+    try {
+      savedTheme = localStorage.getItem("netnavin-portfolio-theme") || "light";
+    } catch (error) {
+      // Use light theme if browser storage is unavailable.
+    }
+
+    applyTheme(savedTheme);
+
+    themeToggle.addEventListener("click", () => {
+      const nextTheme =
+        document.body.dataset.theme === "dark" ? "light" : "dark";
+
+      applyTheme(nextTheme);
+    });
+
+    // Reveal only the main content of each slide.
+    // This avoids nested elements appearing to belong to another slide.
+    slides.forEach((slide) => {
+      const revealElements = slide.id === "home"
+        ? [
+            slide.querySelector(".hero-copy"),
+            slide.querySelector(".profile-area"),
+            slide.querySelector(".scroll-hint")
+          ]
+        : [
+            slide.querySelector(".slide-inner"),
+            slide.querySelector(".contact-footer")
+          ];
+
+      revealElements
+        .filter(Boolean)
+        .forEach((element, index) => {
+          element.classList.add("reveal");
+          element.style.transitionDelay = `${index * 100}ms`;
+        });
+    });
+
+    function setActiveSlide(index) {
+      if (index < 0 || index >= slides.length || index === activeIndex) return;
+
+      activeIndex = index;
+      document.body.dataset.slide = String(index + 1);
+
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("is-active", slideIndex === index);
+      });
+
+      dots.forEach((dot, dotIndex) => {
+        const isActive = dotIndex === index;
+        dot.classList.toggle("active", isActive);
+        dot.setAttribute("aria-current", isActive ? "true" : "false");
+      });
+
+      currentSlideLabel.textContent = String(index + 1).padStart(2, "0");
+      progressFill.style.width =
+        `${((index + 1) / slides.length) * 100}%`;
+    }
+
+    // Select the slide at the centre of the viewport.
+    // This is more reliable than IntersectionObserver for tall mobile slides.
+    function updateActiveSlide() {
+      const viewportCenter = window.innerHeight / 2;
+
+      let index = slides.findIndex((slide) => {
+        const rect = slide.getBoundingClientRect();
+        return rect.top <= viewportCenter && rect.bottom > viewportCenter;
+      });
+
+      // Fallback if the viewport centre is between slides.
+      if (index === -1) {
+        let greatestVisibleHeight = 0;
+
+        slides.forEach((slide, slideIndex) => {
+          const rect = slide.getBoundingClientRect();
+          const visibleHeight = Math.max(
+            0,
+            Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0)
+          );
+
+          if (visibleHeight > greatestVisibleHeight) {
+            greatestVisibleHeight = visibleHeight;
+            index = slideIndex;
+          }
+        });
+      }
+
+      if (index !== -1) {
+        setActiveSlide(index);
+      }
+    }
+
+    window.addEventListener("scroll", () => {
+      if (scrollFramePending) return;
+
+      scrollFramePending = true;
+
+      requestAnimationFrame(() => {
+        updateActiveSlide();
+        scrollFramePending = false;
+      });
+    }, { passive: true });
+
+    window.addEventListener("resize", updateActiveSlide);
+
+    // Navigate with slide dots
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", () => {
+        slides[index]?.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      });
+    });
+
+    // Keyboard navigation: arrows, Page Up/Down, or Space
+    document.addEventListener("keydown", (event) => {
+      if (event.target.closest("a, button, input, textarea, select")) return;
+
+      let nextIndex = activeIndex;
+
+      if (["ArrowDown", "PageDown", " "].includes(event.key)) {
+        nextIndex = Math.min(slides.length - 1, activeIndex + 1);
+      } else if (["ArrowUp", "PageUp"].includes(event.key)) {
+        nextIndex = Math.max(0, activeIndex - 1);
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      slides[nextIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+
+    // Set the correct slide on initial page load.
+    updateActiveSlide();
+  </script>
+</body>
+</html>
