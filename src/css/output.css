@@ -1,8 +1,6 @@
 /*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
 @layer properties;
 @layer theme, base, components, utilities;
-
-
 @layer theme {
   :root, :host {
     --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
@@ -27,9 +25,6 @@
     padding: 0;
     border: 0 solid;
   }
-
-  
-
   html, :host {
     line-height: 1.5;
     -webkit-text-size-adjust: 100%;
@@ -248,9 +243,9 @@
  * Licensed under MIT (https://github.com/twbs/icons/blob/main/LICENSE)
  */
 @font-face {
-    font-family: "bootstrap-icons";
-    src: url("./fonts/bootstrap-icons.woff2") format("woff2"),
-         url("./fonts/bootstrap-icons.woff") format("woff");
+  font-display: block;
+  font-family: "bootstrap-icons";
+  src: url("./fonts/bootstrap-icons.woff2") format("woff2"), url("./fonts/bootstrap-icons.woff") format("woff");
 }
 .bi::before, [class^="bi-"]::before, [class*=" bi-"]::before {
   display: inline-block;
