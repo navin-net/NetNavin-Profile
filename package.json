@@ -4,7 +4,7 @@
   "description": "A personal portfolio website — built like a digital CV/resume — showcasing my background, skills, and projects.",
   "main": "index.js",
   "scripts": {
-    "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "dev": "tailwindcss -i ./src/input.css -o ./assets/output.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
