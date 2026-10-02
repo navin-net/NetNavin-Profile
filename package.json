@@ -1,0 +1,26 @@
+{
+  "name": "netnavin-profile",
+  "version": "1.0.0",
+  "description": "A personal portfolio website — built like a digital CV/resume — showcasing my background, skills, and projects.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/navin-net/NetNavin-Profile.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/navin-net/NetNavin-Profile/issues"
+  },
+  "homepage": "https://github.com/navin-net/NetNavin-Profile#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}
